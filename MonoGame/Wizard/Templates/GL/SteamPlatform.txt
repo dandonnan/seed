@@ -1,0 +1,399 @@
+namespace [[Namespace]].GL
+{
+    using [[Namespace]].Platforms;
+    using Microsoft.Xna.Framework.Graphics;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using Steamworks;
+    using System;
+    using System.Text;
+    using System.IO;
+    using Microsoft.Xna.Framework;
+
+    internal class SteamPlatform : IPlatform
+    {
+        private const uint steamAppId = 480;
+
+        private readonly GraphicsDevice graphicsDevice;
+
+        private bool initialised = false;
+
+        private SteamAPIWarningMessageHook_t steamWarningHook;
+
+        private Callback<GameOverlayActivated_t> overlayCallback;
+
+        private uint userId;
+
+        public SteamPlatform(GraphicsDevice graphicsDevice)
+        {
+            this.graphicsDevice = graphicsDevice;
+
+            if (Packsize.Test() == false)
+            {
+                throw new Exception("The wrong version of Steamworks.NET is being used.");
+            }
+
+            if (DllCheck.Test() == false)
+            {
+                throw new Exception("One or more Steamworks.NET binaries are the wrong version.");
+            }
+
+            try
+            {
+                if (SteamAPI.RestartAppIfNecessary(new AppId_t(steamAppId)))
+                {
+                    StopAndClose();
+                }
+                else
+                {
+                    initialised = SteamAPI.Init();
+
+                    if (initialised == false)
+                    {
+                        throw new Exception("Could not initialise Steam API.");
+                    }
+
+                    steamWarningHook = new SteamAPIWarningMessageHook_t(SteamApiDebugHook);
+                    SteamClient.SetWarningMessageHook(steamWarningHook);
+
+                    overlayCallback = Callback<GameOverlayActivated_t>.Create(OnSteamOverlayCallback);
+
+                    SteamInput.Init(false);
+
+                    SteamUserStats.RequestCurrentStats();
+
+                    // todo: warnings
+                }
+            }
+            catch (DllNotFoundException)
+            {
+                StopAndClose();
+            }
+        }
+
+        public void Update()
+        {
+            if (initialised)
+            {
+                SteamAPI.RunCallbacks();
+            }
+        }
+
+        public void Stop()
+        {
+            if (initialised)
+            {
+                initialised = false;
+
+                SteamAPI.Shutdown();
+            }
+        }
+
+        public string GetPlatformName()
+        {
+            return "Steam";
+        }
+
+        public string GetPlatformVersion()
+        {
+            return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        }
+
+        public bool IsPC()
+        {
+            return true;
+        }
+
+        public bool IsConsole()
+        {
+            return false;
+        }
+
+        public bool IsMobile()
+        {
+            return false;
+        }
+
+        public string GetSaveFileName()
+        {
+            string name;
+
+            if (Directory.Exists("Content\\Data\\User") == false)
+            {
+                Directory.CreateDirectory("Content\\Data\\User");
+            }
+
+            if (initialised)
+            {
+                name = $"Content\\Data\\User\\[[NamespaceToLower]]-{GetSteamUserId()}.sav";
+            }
+            else
+            {
+                name = "Content\\Data\\User\\[[NamespaceToLower]].sav";
+            }
+
+            return name;
+        }
+
+        public void SaveData(string serialisedData)
+        {
+            using (StreamWriter streamWriter = new StreamWriter(GetSaveFileName()))
+            {
+                streamWriter.Write(serialisedData);
+            }
+        }
+
+        public GameSaveData LoadData()
+        {
+            GameSaveData gameData = new GameSaveData();
+
+            if (File.Exists(PlatformManager.Platform.GetSaveFileName()))
+            {
+                try
+                {
+                    using (StreamReader streamReader = new StreamReader(GetSaveFileName()))
+                    {
+                        string data = streamReader.ReadToEnd();
+                        gameData = JsonConvert.DeserializeObject<GameSaveData>(data);
+                    }
+                }
+                catch
+                {
+                    // todo: display message
+                }
+            }
+
+            return gameData;
+        }
+
+        public void UnlockAchievement(string achievementId)
+        {
+            if (initialised)
+            {
+                SteamUserStats.SetAchievement(achievementId);
+
+                SteamUserStats.StoreStats();
+            }
+        }
+
+        public void SetAchievementProgress(string achievementId, int progress)
+        {
+            if (initialised)
+            {
+                SteamUserStats.SetStat($"{achievementId}_PROGRESS", progress);
+
+                SteamUserStats.StoreStats();
+            }
+        }
+
+        public void ResetAchievements()
+        {
+            if (initialised)
+            {
+                SteamUserStats.ResetAllStats(true);
+            }
+        }
+
+        public bool HasAchievement(string achievementId)
+        {
+            bool hasAchievement = false;
+
+            if (initialised)
+            {
+                SteamUserStats.GetAchievement(achievementId, out hasAchievement);
+            }
+
+            return hasAchievement;
+        }
+
+        public float GetAchievementProgress(string achievementId)
+        {
+            return 0;
+        }
+
+        public void OpenStore()
+        {
+            OpenStoreOnAppPage();
+        }
+
+        public void OpenStoreOnAppPage()
+        {
+            if (initialised)
+            {
+                SteamFriends.ActivateGameOverlayToStore(new AppId_t(steamAppId), EOverlayToStoreFlag.k_EOverlayToStoreFlag_None);
+            }
+        }
+
+        public void SetRichPresence(string richPresence)
+        {
+            if (initialised)
+            {
+                SteamFriends.SetRichPresence("steam_display", $"#{richPresence}");
+            }
+        }
+
+        public void ClearRichPresence()
+        {
+            if (initialised)
+            {
+                SteamFriends.ClearRichPresence();
+            }
+        }
+
+        public void SetControllerColour(Color colour)
+        {
+            if (initialised)
+            {
+                SteamInput.SetLEDColor(SteamInput.GetControllerForGamepadIndex(0), colour.R, colour.G, colour.B, (uint)ESteamInputLEDFlag.k_ESteamInputLEDFlag_SetColor);
+            }
+        }
+
+        public void SetControllerColourToDefault()
+        {
+            if (initialised)
+            {
+                SteamInput.SetLEDColor(SteamInput.GetControllerForGamepadIndex(0), 0, 0, 0, (uint)ESteamInputLEDFlag.k_ESteamInputLEDFlag_RestoreUserDefault);
+            }
+        }
+
+        public string GetDefaultResolution()
+        {
+            return "1280x720";
+        }
+
+        public ScreenSizes GetDefaultScreenSize()
+        {
+            return ScreenSizes.Windowed;
+        }
+
+        public List<string> GetPlatformResolutions()
+        {
+            List<string> resolutions = new List<string>();
+
+            string format = "{0}x{1}";
+
+            foreach (DisplayMode resolution in graphicsDevice.Adapter.SupportedDisplayModes)
+            {
+                resolutions.Add(string.Format(format, resolution.Width, resolution.Height));
+            }
+
+            return resolutions;
+        }
+
+        public string GetIconFile()
+        {
+            ControllerType type = GetControllerType();
+
+            string platform;
+
+            switch (type)
+            {
+                case ControllerType.Xbox:
+                    platform = "xbox";
+                    break;
+
+                case ControllerType.Playstation:
+                    platform = "playstation";
+                    break;
+
+                case ControllerType.Switch:
+                    platform = "switch";
+                    break;
+
+                default:
+                    platform = "xbox";
+                    break;
+            }
+
+            return $"Sprites\\UI\\{platform}_icons";
+        }
+
+        private static void SteamApiDebugHook(int severity, StringBuilder text)
+        {
+            // TODO: log warnings
+        }
+
+        private static void OnSteamOverlayCallback(GameOverlayActivated_t overlayCallback)
+        {
+            if (overlayCallback.m_bActive != 0)
+            {
+                // todo: event for overlay shown
+            }
+            else
+            {
+                // todo: event for overlay hide
+            }
+        }
+
+        private ControllerType GetControllerType()
+        {
+            ControllerType type;
+
+            SteamInput.RunFrame();
+
+            InputHandle_t[] handles = new InputHandle_t[Constants.STEAM_INPUT_MAX_COUNT];
+
+            int controllers = SteamInput.GetConnectedControllers(handles);
+
+            InputHandle_t controllerHandle = SteamInput.GetControllerForGamepadIndex(0);
+
+            if (controllers > 0)
+            {
+                foreach (InputHandle_t handle in handles)
+                {
+                    if (handle.m_InputHandle != 0)
+                    {
+                        controllerHandle = handle;
+                        break;
+                    }
+                }
+            }
+
+            ESteamInputType inputType = SteamInput.GetInputTypeForHandle(controllerHandle);
+
+            switch (inputType)
+            {
+                case ESteamInputType.k_ESteamInputType_PS3Controller:
+                case ESteamInputType.k_ESteamInputType_PS4Controller:
+                case ESteamInputType.k_ESteamInputType_PS5Controller:
+                    type = ControllerType.Playstation;
+                    break;
+
+                case ESteamInputType.k_ESteamInputType_SwitchJoyConPair:
+                case ESteamInputType.k_ESteamInputType_SwitchJoyConSingle:
+                    type = ControllerType.Switch;
+                    break;
+
+                case ESteamInputType.k_ESteamInputType_XBox360Controller:
+                case ESteamInputType.k_ESteamInputType_XBoxOneController:
+                    type = ControllerType.Xbox;
+                    break;
+
+                default:
+                    type = ControllerType.Xbox;
+                    break;
+            }
+
+            return type;
+        }
+
+        private uint GetSteamUserId()
+        {
+            if (userId == 0 && initialised)
+            {
+                CSteamID steamId = SteamUser.GetSteamID();
+                AccountID_t accountId = steamId.GetAccountID();
+                userId = accountId.m_AccountID;
+            }
+
+            return userId;
+        }
+
+        private void StopAndClose()
+        {
+            Stop();
+            MainGame.Close();
+        }
+    }
+}

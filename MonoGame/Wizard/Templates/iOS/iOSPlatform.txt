@@ -1,0 +1,166 @@
+namespace [[Namespace]].iOS
+{
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Newtonsoft.Json;
+    using [[Namespace]].Platforms;
+    using [[Namespace]].Save;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+
+    internal class iOSPlatform : IPlatform
+    {
+        private readonly GraphicsDevice graphicsDevice;
+
+        public iOSPlatform(GraphicsDevice graphicsDevice)
+        {
+            this.graphicsDevice = graphicsDevice;
+        }
+
+        public void Update()
+        {
+        }
+
+        public void Stop()
+        {
+        }
+
+        public string GetPlatformName()
+        {
+            return "iOS";
+        }
+
+        public string GetPlatformVersion()
+        {
+            return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        }
+
+        public bool IsPC()
+        {
+            return false;
+        }
+
+        public bool IsConsole()
+        {
+            return false;
+        }
+
+        public bool IsMobile()
+        {
+            return true;
+        }
+
+        public string GetSaveFileName()
+        {
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "spielman.sav");
+        }
+
+        public void SaveData(string serialisedData)
+        {
+            using (StreamWriter streamWriter = new StreamWriter(GetSaveFileName()))
+            {
+                streamWriter.Write(serialisedData);
+            }
+        }
+
+        public GameSaveData LoadGameData()
+        {
+            GameSaveData gameData = new GameSaveData();
+
+            try
+            {
+                using (StreamReader streamReader = new StreamReader(GetSaveFileName()))
+                {
+                    string data = streamReader.ReadToEnd();
+
+                    gameData = JsonConvert.DeserializeObject<GameSaveData>(data);
+                }
+            }
+            catch
+            {
+                // todo: handle not found
+            }
+
+            return gameData;
+        }
+
+        public void UnlockAchievement(string achievementId)
+        {
+        }
+
+        public void SetAchievementProgress(string achievementId, int progress)
+        {
+        }
+
+        public void ResetAchievements()
+        {
+
+        }
+
+        public bool HasAchievement(string achievementId)
+        {
+            return false;
+        }
+
+        public float GetAchievementProgress(string achievementId)
+        {
+            return 0;
+        }
+
+        public void OpenStore()
+        {
+        }
+
+        public void OpenStoreOnAppPage()
+        {
+        }
+
+        public void SetRichPresence(string richPresence)
+        {
+        }
+
+        public void ClearRichPresence()
+        {
+        }
+
+        public void SetControllerColour(Color colour)
+        {
+        }
+
+        public void SetControllerColourToDefault()
+        {
+        }
+
+        public string GetDefaultResolution()
+        {
+            return GetPlatformResolutions().First();
+        }
+
+        public ScreenSizes GetDefaultScreenSize()
+        {
+            return ScreenSizes.Fullscreen;
+        }
+
+        public List<string> GetPlatformResolutions()
+        {
+            List<string> resolutions = new List<string>();
+
+            string format = "{0}x{1}";
+
+            foreach (DisplayMode resolution in graphicsDevice.Adapter.SupportedDisplayModes)
+            {
+                resolutions.Add(string.Format(format, resolution.Width, resolution.Height));
+            }
+
+            return resolutions;
+        }
+
+        public string GetIconFile()
+        {
+            return "Sprites\\UI\\xbox_icons";
+        }
+    }
+}

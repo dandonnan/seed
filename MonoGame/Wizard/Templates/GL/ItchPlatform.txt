@@ -1,0 +1,172 @@
+namespace [[Namespace]].GL
+{
+    using [[Namespace]].Graphics;
+    using [[Namespace]].Platforms;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Reflection;
+    using Seed.MonoGame.Save;
+    using Newtonsoft.Json;
+
+    internal class ItchPlatform : IPlatform
+    {
+        private readonly GraphicsDevice graphicsDevice;
+
+        public ItchPlatform(GraphicsDevice graphicsDevice)
+        {
+            this.graphicsDevice = graphicsDevice;
+        }
+
+        public void Update()
+        {
+        }
+
+        public void Stop()
+        {
+        }
+
+        public string GetPlatformName()
+        {
+            return "Itch";
+        }
+
+        public string GetPlatformVersion()
+        {
+            return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        }
+
+        public bool IsPC()
+        {
+            return true;
+        }
+
+        public bool IsConsole()
+        {
+            return false;
+        }
+
+        public bool IsMobile()
+        {
+            return false;
+        }
+
+        public string GetSaveFileName()
+        {
+            if (Directory.Exists("Content\\Data\\User") == false)
+            {
+                Directory.CreateDirectory("Content\\Data\\User");
+            }
+
+            return "Content\\Data\\User\\[[NamespaceToLower]].sav";
+        }
+
+        public void SaveData(string serialisedData)
+        {
+            using (StreamWriter streamWriter = new StreamWriter(GetSaveFileName()))
+            {
+                streamWriter.Write(serialisedData);
+            }
+        }
+
+        public GameSaveData LoadGameData()
+        {
+            GameSaveData gameData = new GameSaveData();
+
+            if (File.Exists(PlatformManager.Platform.GetSaveFileName()))
+            {
+                try
+                {
+                    using (StreamReader streamReader = new StreamReader(GetSaveFileName()))
+                    {
+                        string data = streamReader.ReadToEnd();
+                        gameData = JsonConvert.DeserializeObject<GameSaveData>(data);
+                    }
+                }
+                catch
+                {
+                    // todo: display message
+                }
+            }
+
+            return gameData;
+        }
+
+        public void UnlockAchievement(string achievementId)
+        {
+        }
+
+        public void SetAchievementProgress(string achievementId, int progress)
+        {
+        }
+
+        public void ResetAchievements()
+        {
+
+        }
+
+        public bool HasAchievement(string achievementId)
+        {
+            return false;
+        }
+
+        public float GetAchievementProgress(string achievementId)
+        {
+            return 0;
+        }
+
+        public void OpenStore()
+        {
+        }
+
+        public void OpenStoreOnAppPage()
+        {
+        }
+
+        public void SetRichPresence(string richPresence)
+        {
+        }
+
+        public void ClearRichPresence()
+        {
+        }
+
+        public void SetControllerColour(Color colour)
+        {
+        }
+
+        public void SetControllerColourToDefault()
+        {
+        }
+
+        public string GetDefaultResolution()
+        {
+            return "1280x720";
+        }
+
+        public ScreenSizes GetDefaultScreenSize()
+        {
+            return ScreenSizes.Windowed;
+        }
+
+        public List<string> GetPlatformResolutions()
+        {
+            List<string> resolutions = new List<string>();
+
+            string format = "{0}x{1}";
+
+            foreach (DisplayMode resolution in graphicsDevice.Adapter.SupportedDisplayModes)
+            {
+                resolutions.Add(string.Format(format, resolution.Width, resolution.Height));
+            }
+
+            return resolutions;
+        }
+
+        public string GetIconFile()
+        {
+            return "Sprites\\UI\\xbox_icons";
+        }
+    }
+}

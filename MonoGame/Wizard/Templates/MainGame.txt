@@ -1,0 +1,58 @@
+namespace [[Namespace]].Android
+{
+    using [[Namespace]];
+    using [[Namespace]].Platforms;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
+    public class MainGame : Game
+    {
+        private static MainGame game;
+
+        private GraphicsDeviceManager graphicsDeviceManager;
+
+        private SpriteBatch spriteBatch;
+
+        private GameManager gameManager;
+
+        public MainGame()
+        {
+            game = this;
+            graphicsDeviceManager = new GraphicsDeviceManager(this);
+            Content.RootDirectory = "Content";
+            IsMouseVisible = true;
+        }
+
+        public static void Close()
+        {
+        }
+
+        protected override void Initialize()
+        {
+            PlatformManager.Initialise(new AndroidPlatform(GraphicsDevice));
+
+            base.Initialize();
+        }
+
+        protected override void LoadContent()
+        {
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            gameManager = new GameManager(this, Content, GraphicsDevice, graphicsDeviceManager, spriteBatch);
+        }
+
+        protected override void Update(GameTime gameTime)
+        {
+            gameManager.Update(gameTime);
+
+            base.Update(gameTime);
+        }
+
+        protected override void Draw(GameTime gameTime)
+        {
+            gameManager.Draw();
+
+            base.Draw(gameTime);
+        }
+    }
+}
