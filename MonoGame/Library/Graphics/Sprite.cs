@@ -11,13 +11,13 @@ namespace Seed.MonoGame.Graphics
 
     public class Sprite : AbstractSprite
     {
-        private readonly Frame frame;
+        private readonly Resources.Shared.Rectangle frame;
 
-        private readonly Rectangle sourceRectangle;
+        private readonly Microsoft.Xna.Framework.Rectangle sourceRectangle;
 
         private float depthOffset;
 
-        public Sprite(SpriteDefinition definition)
+        public Sprite(SpritePart definition)
             : base()
         {
             id = definition.Id;
@@ -32,8 +32,8 @@ namespace Seed.MonoGame.Graphics
             : base()
         {
             this.texture = GameManager.LoadTexture(texture);
-            frame = new Frame { X = 0, Y = 0, Width = this.texture.Width, Height = this.texture.Height };
-            frames = new List<Frame> { frame };
+            frame = new Resources.Shared.Rectangle { X = 0, Y = 0, Width = this.texture.Width, Height = this.texture.Height };
+            frames = new List<Resources.Shared.Rectangle> { frame };
             depthOffset = 0;
             sourceRectangle = frame.ToRectangle();
         }

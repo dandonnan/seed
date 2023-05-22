@@ -3,7 +3,7 @@ namespace Seed.MonoGame.Graphics
     using Microsoft.Xna.Framework;
     using System;
 
-    internal class Line
+    public class Line
     {
         public float Length { get; private set; }
 

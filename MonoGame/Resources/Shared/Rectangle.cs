@@ -1,6 +1,6 @@
 namespace Seed.MonoGame.Resources.Shared
 {
-    public class Frame
+    public class Rectangle
     {
         public int X { get; set; }
 

@@ -5,5 +5,7 @@ namespace Seed.Save
     public interface IGameSaveData
     {
         List<Achievement> Achievements { get; protected set; }
+
+        bool AllowRumble();
     }
 }

@@ -51,12 +51,12 @@ namespace Seed.Unity.Input
 
         public static void Rumble(float time = 0.5f)
         {
-            /* if (SaveManager.Data.Options.Controls.Rumble)
+            if (SaveManager.Data.AllowRumble())
             {
                 instance.rumbleTime = time;
 
                 Gamepad.current?.SetMotorSpeeds(0.25f, 0.25f);
-            } */
+            }
         }
 
         public static void Update()

@@ -1,16 +1,22 @@
 namespace Seed.MonoGame.Save
 {
-    using Seed.MonoGame.Achievements;
-    using Seed.MonoGame.Localisation;
+    using Seed.Achievements;
+    using Seed.Save;
 
-    public class GameSaveData
+    public class GameSaveData : IGameSaveData
     {
-        private const int achievements = 0;
+        private const int numberOfAchievements = 0;
 
         public string Language { get; set; }
 
-        public Achievement[] Achievements { get; set; }
-            = new Achievement[achievements];
+        public List<Achievement> Achievements
+        {
+            get { return achievements.ToList(); }
+            set { achievements = value.ToArray(); }
+        }
+
+        private Achievement[] achievements { get; set; }
+            = new Achievement[numberOfAchievements];
 
         public AudioSettings Audio { get; set; }
 
@@ -19,9 +25,14 @@ namespace Seed.MonoGame.Save
             SetToDefault();
         }
 
+        public bool AllowRumble()
+        {
+            return false;
+        }
+
         private void SetToDefault()
         {
-            Language = SupportedLanguages.GetCultureLanguageCodeOrDefault();
+            //Language = SupportedLanguages.GetCultureLanguageCodeOrDefault();
 
             Audio = new AudioSettings
             {

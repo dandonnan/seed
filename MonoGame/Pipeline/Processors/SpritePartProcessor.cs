@@ -4,7 +4,7 @@ namespace Seed.MonoGame.Pipeline.Processors
     using Microsoft.Xna.Framework.Content.Pipeline;
 
     [ContentProcessor(DisplayName = "Sprite Processor")]
-    public class SpriteDefinitionProcessor : BaseListProcessor<SpriteDefinition>
+    public class SpritePartProcessor : BaseListProcessor<SpritePart>
     {
     }
 }

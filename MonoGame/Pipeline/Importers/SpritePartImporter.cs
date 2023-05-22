@@ -5,9 +5,9 @@ namespace Seed.MonoGame.Pipeline.Importers
     using System;
     using System.IO;
 
-    public class SpriteDefinitionImporter : ContentImporter<String>
+    public class SpritePartImporter : ContentImporter<String>
     {
-        [ContentImporter(".spd", DisplayName = "Sprite Importer", DefaultProcessor = nameof(SpriteDefinitionProcessor))]
+        [ContentImporter(".spt", DisplayName = "Sprite Importer", DefaultProcessor = nameof(SpritePartProcessor))]
         public override string Import(string filename, ContentImporterContext context)
         {
             return File.ReadAllText(filename);

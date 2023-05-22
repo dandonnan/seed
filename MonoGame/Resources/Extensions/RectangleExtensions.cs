@@ -2,11 +2,11 @@ namespace Seed.MonoGame.Resources.Extensions
 {
     using Seed.MonoGame.Resources.Shared;
 
-    public static class FrameExtensions
+    public static class RectangleExtensions
     {
-        public static Frame Copy(this Frame source)
+        public static Rectangle Copy(this Rectangle source)
         {
-            return new Frame
+            return new Rectangle
             {
                 X = source.X,
                 Y = source.Y,

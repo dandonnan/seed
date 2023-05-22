@@ -5,9 +5,9 @@ namespace Seed.MonoGame.Extensions
 
     internal static class FrameExtensions
     {
-        public static Rectangle ToRectangle(this Frame source)
+        public static Microsoft.Xna.Framework.Rectangle ToRectangle(this Resources.Shared.Rectangle source)
         {
-            return new Rectangle(source.X, source.Y, source.Width, source.Height);
+            return new Microsoft.Xna.Framework.Rectangle(source.X, source.Y, source.Width, source.Height);
         }
     }
 }

@@ -1,7 +1,7 @@
 namespace Seed.MonoGame.Input
 {
+    using Seed.Platforms;
     using Seed.MonoGame.Extensions;
-    using Seed.MonoGame.Platforms;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Input;
     using System.Collections.Generic;

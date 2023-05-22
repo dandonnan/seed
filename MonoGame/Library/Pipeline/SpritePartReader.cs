@@ -2,7 +2,7 @@ namespace Seed.MonoGame.Pipeline
 {
     using Seed.MonoGame.Resources.Graphics;
 
-    public class SpriteDefinitionReader : BaseListReader<SpriteDefinition>
+    public class SpritePartReader : BaseListReader<SpritePart>
     {
     }
 }

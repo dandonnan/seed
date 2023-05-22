@@ -1,9 +1,9 @@
 namespace Seed.MonoGame.Save
 {
-    using Seed.MonoGame.Achievements;
-    using Seed.MonoGame.Platforms;
+    using Seed.Achievements;
     using Newtonsoft.Json;
     using System.IO;
+    using Seed.Platforms;
 
     public class SaveManager
     {
@@ -44,7 +44,7 @@ namespace Seed.MonoGame.Save
 
                 if (achievements.Length > 1)
                 {
-                    instance.gameData.Achievements = achievements;
+                    instance.gameData.Achievements = achievements.ToList();
                 }
 
                 string gameData = JsonConvert.SerializeObject(instance.gameData);
@@ -68,7 +68,7 @@ namespace Seed.MonoGame.Save
 
         public static void Load()
         {
-            instance.gameData = PlatformManager.Platform.LoadGameData();
+            instance.gameData = (GameSaveData)PlatformManager.Platform.LoadGameData();
 
             if (File.Exists(MachineFile))
             {

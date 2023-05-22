@@ -33,7 +33,7 @@ namespace Seed.MonoGame.Graphics
 
         protected Color colour;
 
-        protected List<Frame> frames;
+        protected List<Resources.Shared.Rectangle> frames;
 
         public AbstractSprite()
         {
