@@ -1,13 +1,7 @@
 # Seed
 
-After continuously starting projects and then abandoning them after setting up some of the
-non-gamey stuff, **Seed** was created to bring together these abandoned backbones so that
-projects could be started with them already there.
+While the repository is set to public, it is advised not to use any of these libraries as they aren't
+finished - the MonoGame libraries currently don't build and the Unity package is experimental.
 
-## MonoGame
-The **MonoGame** part of Seed consists of some class libraries that can be imported into
-a MonoGame project, as well as a wizard that can create a new game solution and integrate
-specific parts of Seed directly into it.
-
-## Unity
-The **Unity** part of Seed is a class library that can be used within a Unity project.
+The intent is for these to be usable at somepoint in the near future, but it has only been made public
+at this point so the Unity package can be installed from a central location instead of locally.
