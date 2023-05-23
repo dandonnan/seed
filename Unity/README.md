@@ -3,6 +3,11 @@
 ## Documentation
 View the documentation [here](Documentation/Seed.md)
 
+## Installation
+To install the package, open the Package Manager from within Unity (**Window**->**Package Manager**).
+In the top left corner of the window, click **+** and **Add package from git URL...**. In the box
+that appears, enter **https://github.com/dandonnan/seed.git?path=/Unity**
+
 ## Dependencies
 **Seed for Unity** has dependencies on the following packages:
 
