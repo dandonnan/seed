@@ -25,7 +25,7 @@ namespace Seed.Unity.Menu
         {
             shelves[currentShelf].Update();
 
-            /* if (shelves.Count > 1 && InputManager.Menu.Move.WasPressedThisFrame(out Vector2 move))
+            if (shelves.Count > 1 && InputManager.Menu.LeftStickMove.WasPressedThisFrame(out Vector2 move))
             {
                 if (move.y > 0)
                 {
@@ -35,7 +35,7 @@ namespace Seed.Unity.Menu
                 {
                     currentShelf = currentShelf == shelves.Count - 1 ? 0 : currentShelf + 1;
                 }
-            } */
+            }
         }
     }
 }

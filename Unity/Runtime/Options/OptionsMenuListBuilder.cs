@@ -14,20 +14,20 @@ namespace Seed.Unity.Options
 
         private int offset;
 
-        private OptionsMenuListBuilder(OptionsMenu menu, Vector3 position, int yOffset)
+        private OptionsMenuListBuilder(Transform parent, Vector3 position, int yOffset)
         {
-            list = new OptionsMenuList(menu);
+            list = new OptionsMenuList();
 
-            parent = menu.transform;
+            this.parent = parent;
 
             this.position = position;
 
             offset = yOffset;
         }
 
-        public static OptionsMenuListBuilder Create(OptionsMenu menu, Vector3 position, int yOffset)
+        public static OptionsMenuListBuilder Create(Transform parent, Vector3 position, int yOffset)
         {
-            return new OptionsMenuListBuilder(menu, position, yOffset);
+            return new OptionsMenuListBuilder(parent, position, yOffset);
         }
 
         public OptionsMenuListBuilder Add(string id, int value, Action onLeft, Action onRight)

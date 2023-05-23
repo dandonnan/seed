@@ -38,15 +38,15 @@ namespace Seed.Unity.UI
 
         private void LateUpdate()
         {
-            /*if (InputManager.Menu.Select.WasCapturedThisFrame() && canClose)
+            if (InputManager.Menu.South.WasCapturedThisFrame() && canClose)
             {
                 Close(true);
             }
 
-            if (InputManager.Menu.Back.WasCapturedThisFrame() && canCloseNegative)
+            if (InputManager.Menu.East.WasCapturedThisFrame() && canCloseNegative)
             {
                 Close();
-            } */
+            }
         }
 
         public void Show(ModalSettings settings)

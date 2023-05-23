@@ -7,16 +7,12 @@ namespace Seed.Unity.Options
 
     public class OptionsMenuList
     {
-        private List<OptionsMenuOption> options;
+        protected List<OptionsMenuOption> options;
 
-        private int highlightedOption;
+        protected int highlightedOption;
 
-        private OptionsMenu menu;
-
-        public OptionsMenuList(OptionsMenu menu)
+        public OptionsMenuList()
         {
-            this.menu = menu;
-
             options = new List<OptionsMenuOption>();
         }
 
@@ -35,37 +31,31 @@ namespace Seed.Unity.Options
             options[highlightedOption].SetValue(value);
         }
 
-        public void Show()
+        public virtual void Show()
         {
             options.ForEach(o => o.Show());
-
-            options[highlightedOption].SetHint(menu);
         }
 
-        public void Hide()
+        public virtual void Hide()
         {
             options.ForEach(o => o.Hide());
         }
 
-        public void Update()
+        public virtual void Update()
         {
             options[highlightedOption].Update();
 
-            /*if (InputManager.Menu.Move.WasPressedThisFrame(out Vector2 move))
+            if (InputManager.Menu.LeftStickMove.WasPressedThisFrame(out Vector2 move))
             {
                 if (move.y < 0)
                 {
                     highlightedOption = highlightedOption == options.Count - 1 ? 0 : highlightedOption + 1;
-
-                    options[highlightedOption].SetHint(menu);
                 }
                 else if (move.y > 0)
                 {
                     highlightedOption = highlightedOption == 0 ? options.Count - 1 : highlightedOption - 1;
-
-                    options[highlightedOption].SetHint(menu);
                 }
-            } */
+            }
         }
     }
 }

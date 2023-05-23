@@ -19,11 +19,11 @@ namespace Seed.Unity.Options
 
         protected OptionsMenuList menu;
 
-        public AbstractOptionsMenu(OptionsMenu options)
+        public AbstractOptionsMenu()
         {
             defaultPosition = new Vector3(300, 450, 0);
 
-            PopulateMenu(options);
+            PopulateMenu();
         }
 
         public virtual void Show()
@@ -51,6 +51,6 @@ namespace Seed.Unity.Options
             return value ? Translations.Get(onId) : Translations.Get(offId);
         }
 
-        protected abstract void PopulateMenu(OptionsMenu parent);
+        protected abstract void PopulateMenu();
     }
 }

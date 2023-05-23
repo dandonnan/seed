@@ -10,7 +10,7 @@ namespace Seed.Unity.Input
     {
         private static InputManager instance;
 
-        //private readonly InputActions inputActions;
+        private readonly InputActions inputActions;
 
         private string lastInputDeviceName;
 
@@ -22,14 +22,14 @@ namespace Seed.Unity.Input
         {
             instance = this;
 
-            //inputActions = new InputActions();
-            //inputActions.Enable();
+            inputActions = new InputActions();
+            inputActions.Enable();
 
             SetControllerType(SystemInfo.deviceName);
 
             if (Application.isConsolePlatform == false)
             {
-                //inputActions.Menu.Get().actionTriggered += OnInputActionTriggered;
+                inputActions.Menu.Get().actionTriggered += OnInputActionTriggered;
             }
         }
 
@@ -41,9 +41,9 @@ namespace Seed.Unity.Input
             }
         }
 
-        //public static InputActions.MenuActions Menu => instance.inputActions.Menu;
+        public static InputActions.MenuActions Menu => instance.inputActions.Menu;
 
-        //public static InputActions.PlayerActions Player => instance.inputActions.Player;
+        public static InputActions.PlayerActions Player => instance.inputActions.Player;
 
         public static Platforms ControllerType => instance.controllerType;
 
@@ -51,7 +51,7 @@ namespace Seed.Unity.Input
 
         public static void Rumble(float time = 0.5f)
         {
-            if (SaveManager.Data.AllowRumble())
+            if (SaveManager.GameData.AllowRumble())
             {
                 instance.rumbleTime = time;
 

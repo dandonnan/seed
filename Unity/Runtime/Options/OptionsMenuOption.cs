@@ -38,9 +38,9 @@ namespace Seed.Unity.Options
             option.SetValue(value);
         }
 
-        public void SetHint(OptionsMenu menu)
+        public string GetHint()
         {
-            menu.SetHint(name, hint);
+            return hint;
         }
 
         public void Show()

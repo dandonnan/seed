@@ -28,11 +28,11 @@ namespace Seed.Unity.Menu
 
         public void Update()
         {
-            //PerformActionIfBinding(InputManager.Menu.Move, OnUp, Vector2.up);
-            //PerformActionIfBinding(InputManager.Menu.Move, OnDown, Vector2.down);
-            //PerformActionIfBinding(InputManager.Menu.Move, OnLeft, Vector2.left);
-            //PerformActionIfBinding(InputManager.Menu.Move, OnRight, Vector2.right);
-            //PerformActionIfBinding(InputManager.Menu.Select, OnSelect);
+            PerformActionIfBinding(InputManager.Menu.LeftStickMove, OnUp, Vector2.up);
+            PerformActionIfBinding(InputManager.Menu.LeftStickMove, OnDown, Vector2.down);
+            PerformActionIfBinding(InputManager.Menu.LeftStickMove, OnLeft, Vector2.left);
+            PerformActionIfBinding(InputManager.Menu.LeftStickMove, OnRight, Vector2.right);
+            PerformActionIfBinding(InputManager.Menu.South, OnSelect);
         }
 
         private void PerformActionIfBinding(InputAction binding, Action action)

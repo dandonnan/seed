@@ -25,7 +25,7 @@ namespace Seed.Unity.Menu
         {
             options[highlightedOption].Update();
 
-            /* if (InputManager.Menu.Move.WasPressedThisFrame(out Vector2 move))
+            if (InputManager.Menu.LeftStickMove.WasPressedThisFrame(out Vector2 move))
             {
                 if (move.y < 0)
                 {
@@ -35,7 +35,7 @@ namespace Seed.Unity.Menu
                 {
                     highlightedOption = highlightedOption == 0 ? options.Count - 1 : highlightedOption - 1;
                 }
-            } */
+            }
         }
     }
 }

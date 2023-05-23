@@ -7,5 +7,7 @@ namespace Seed.Events
         public const string ChangeScene = "ChangeScene";
 
         public const string CloseGame = "CloseGame";
+
+        public const string CloseOptionsMenu = "CloseOptionsMenu";
     }
 }

@@ -1,157 +1,41 @@
 namespace Seed.Unity.UI
 {
+    using System.Collections.Generic;
     using Seed.Input;
     using Seed.Platforms;
     using Seed.Unity.Input;
     using TMPro;
     using UnityEngine;
+    using UnityEngine.UI;
+    using UnityEngine.TextCore;
 
+    [DefaultExecutionOrder(-1)]
     public class IconLibrary : MonoBehaviour
     {
         private static IconLibrary instance;
 
+        private Dictionary<string, Sprite> sprites;
+
         [Header("Playstation")]
-        public Sprite PS_South;
-
-        public Sprite PS_East;
-
-        public Sprite PS_North;
-
-        public Sprite PS_West;
-
-        public Sprite PS_LeftStick;
-
-        public Sprite PS_RightStick;
-
-        public Sprite PS_LeftBumper;
-
-        public Sprite PS_RightBumper;
-
-        public Sprite PS_LeftTrigger;
-
-        public Sprite PS_RightTrigger;
-
-        public Sprite PS_DPadLeft;
-
-        public Sprite PS_DPadRight;
-
-        public Sprite PS_DPadUp;
-
-        public Sprite PS_DPadDown;
-
-        public Sprite PS_Pause;
 
         public TMP_SpriteAsset PS_SpriteAsset;
 
         [Header("Xbox")]
-        public Sprite XB_South;
-
-        public Sprite XB_East;
-
-        public Sprite XB_North;
-
-        public Sprite XB_West;
-
-        public Sprite XB_LeftStick;
-
-        public Sprite XB_RightStick;
-
-        public Sprite XB_LeftBumper;
-
-        public Sprite XB_RightBumper;
-
-        public Sprite XB_LeftTrigger;
-
-        public Sprite XB_RightTrigger;
-
-        public Sprite XB_DPadLeft;
-
-        public Sprite XB_DPadRight;
-
-        public Sprite XB_DPadUp;
-
-        public Sprite XB_DPadDown;
-
-        public Sprite XB_Pause;
-
         public TMP_SpriteAsset XB_SpriteAsset;
 
         [Header("Switch")]
-        public Sprite NX_South;
-
-        public Sprite NX_East;
-
-        public Sprite NX_North;
-
-        public Sprite NX_West;
-
-        public Sprite NX_LeftStick;
-
-        public Sprite NX_RightStick;
-
-        public Sprite NX_LeftBumper;
-
-        public Sprite NX_RightBumper;
-
-        public Sprite NX_LeftTrigger;
-
-        public Sprite NX_RightTrigger;
-
-        public Sprite NX_DPadLeft;
-
-        public Sprite NX_DPadRight;
-
-        public Sprite NX_DPadUp;
-
-        public Sprite NX_DPadDown;
-
-        public Sprite NX_Pause;
 
         public TMP_SpriteAsset NX_SpriteAsset;
 
         [Header("PC")]
-        public Sprite PC_South;
-
-        public Sprite PC_East;
-
-        public Sprite PC_North;
-
-        public Sprite PC_West;
-
-        public Sprite PC_LeftStick;
-
-        public Sprite PC_RightStick;
-
-        public Sprite PC_LeftBumper;
-
-        public Sprite PC_RightBumper;
-
-        public Sprite PC_LeftTrigger;
-
-        public Sprite PC_RightTrigger;
-
-        public Sprite PC_DPadLeft;
-
-        public Sprite PC_DPadRight;
-
-        public Sprite PC_DPadUp;
-
-        public Sprite PC_DPadDown;
-
-        public Sprite PC_Pause;
 
         public TMP_SpriteAsset PC_SpriteAsset;
-
-        [Header("League")]
-        public Sprite LeaguePositionUp;
-
-        public Sprite LeaguePositionDown;
-
-        public Sprite LeaguePositionSame;
 
         private void Start()
         {
             instance = this;
+
+            sprites = new Dictionary<string, Sprite>();
         }
 
         public static TMP_SpriteAsset GetSpriteAsset()
@@ -239,51 +123,11 @@ namespace Seed.Unity.UI
             }
         }
 
+        // TODO: Sort this out
         public static string GetIcon(string iconName)
         {
-            string controllerPrefix = GetControllerPrefix();
-            string iconSuffix = GetSuffixFromName(iconName);
+            iconName = iconName.ToUpper();
 
-            return string.Format("{0}_icons_{1}", controllerPrefix, iconSuffix);
-        }
-
-        public static Sprite GetLeaguePositionIcon(int value)
-        {
-            if (value > 0)
-            {
-                return instance.LeaguePositionUp;
-            }
-            else if (value < 0)
-            {
-                return instance.LeaguePositionDown;
-            }
-
-            return instance.LeaguePositionSame;
-        }
-
-        private static string GetControllerPrefix()
-        {
-            switch (InputManager.ControllerType)
-            {
-                case Platforms.PlayStation5:
-                    return "playstation";
-
-                case Platforms.XboxSeries:
-                    return "xbox";
-
-                case Platforms.Switch:
-                    return "switch";
-
-                case Platforms.Itch:
-                    return "pc";
-
-                default:
-                    return "xbox";
-            }
-        }
-
-        private static string GetSuffixFromName(string iconName)
-        {
             switch (iconName)
             {
                 case "ICON_EAST":
@@ -322,6 +166,8 @@ namespace Seed.Unity.UI
                 default:
                     return null;
             }
+
+            //return string.Format("{0}_icons_{1}", controllerPrefix, iconSuffix);
         }
 
         private static Sprite GetSouth(Platforms platform)
@@ -329,19 +175,19 @@ namespace Seed.Unity.UI
             switch (platform)
             {
                 case Platforms.PlayStation5:
-                    return instance.PS_South;
+                    return GetSprite(instance.PS_SpriteAsset, platform, 0);
 
                 case Platforms.XboxSeries:
-                    return instance.XB_South;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 0);
 
                 case Platforms.Switch:
-                    return instance.NX_South;
+                    return GetSprite(instance.NX_SpriteAsset, platform, 0);
 
                 case Platforms.Itch:
-                    return instance.PC_South;
+                    return GetSprite(instance.PC_SpriteAsset, platform, 5);
 
                 default:
-                    return instance.XB_South;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 0);
             }
         }
 
@@ -350,19 +196,19 @@ namespace Seed.Unity.UI
             switch (platform)
             {
                 case Platforms.PlayStation5:
-                    return instance.PS_East;
+                    return GetSprite(instance.PS_SpriteAsset, platform, 1);
 
                 case Platforms.XboxSeries:
-                    return instance.XB_East;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 1);
 
                 case Platforms.Switch:
-                    return instance.NX_East;
+                    return GetSprite(instance.NX_SpriteAsset, platform, 1);
 
-                case Platforms.Itch:
-                    return instance.PC_East;
+                //case Platforms.Itch:
+                //return GetSprite(instance.PC_SpriteAsset, platform, 1);
 
                 default:
-                    return instance.XB_East;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 1);
             }
         }
 
@@ -371,19 +217,19 @@ namespace Seed.Unity.UI
             switch (platform)
             {
                 case Platforms.PlayStation5:
-                    return instance.PS_North;
+                    return GetSprite(instance.PS_SpriteAsset, platform, 2);
 
                 case Platforms.XboxSeries:
-                    return instance.XB_North;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 2);
 
                 case Platforms.Switch:
-                    return instance.NX_North;
+                    return GetSprite(instance.NX_SpriteAsset, platform, 2);
 
                 case Platforms.Itch:
-                    return instance.PC_North;
+                    return GetSprite(instance.PC_SpriteAsset, platform, 4);
 
                 default:
-                    return instance.XB_North;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 2);
             }
         }
 
@@ -392,19 +238,19 @@ namespace Seed.Unity.UI
             switch (platform)
             {
                 case Platforms.PlayStation5:
-                    return instance.PS_West;
+                    return GetSprite(instance.PS_SpriteAsset, platform, 3);
 
                 case Platforms.XboxSeries:
-                    return instance.XB_West;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 3);
 
                 case Platforms.Switch:
-                    return instance.NX_West;
+                    return GetSprite(instance.NX_SpriteAsset, platform, 3);
 
                 case Platforms.Itch:
-                    return instance.PC_West;
+                    return GetSprite(instance.PC_SpriteAsset, platform, 3);
 
                 default:
-                    return instance.XB_West;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 3);
             }
         }
 
@@ -413,19 +259,19 @@ namespace Seed.Unity.UI
             switch (platform)
             {
                 case Platforms.PlayStation5:
-                    return instance.PS_LeftStick;
+                    return GetSprite(instance.PS_SpriteAsset, platform, 14);
 
                 case Platforms.XboxSeries:
-                    return instance.XB_LeftStick;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 14);
 
                 case Platforms.Switch:
-                    return instance.NX_LeftStick;
+                    return GetSprite(instance.NX_SpriteAsset, platform, 14);
 
-                case Platforms.Itch:
-                    return instance.PC_LeftStick;
+                //case Platforms.Itch:
+                //    return GetSprite(instance.PC_SpriteAsset, platform, 1);
 
                 default:
-                    return instance.XB_LeftStick;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 14);
             }
         }
 
@@ -434,19 +280,19 @@ namespace Seed.Unity.UI
             switch (platform)
             {
                 case Platforms.PlayStation5:
-                    return instance.PS_RightStick;
+                    return GetSprite(instance.PS_SpriteAsset, platform, 15);
 
                 case Platforms.XboxSeries:
-                    return instance.XB_RightStick;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 15);
 
                 case Platforms.Switch:
-                    return instance.NX_RightStick;
+                    return GetSprite(instance.NX_SpriteAsset, platform, 15);
 
-                case Platforms.Itch:
-                    return instance.PC_RightStick;
+                //case Platforms.Itch:
+                //    return GetSprite(instance.PC_SpriteAsset, platform, 1);
 
                 default:
-                    return instance.XB_RightStick;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 15);
             }
         }
 
@@ -455,19 +301,19 @@ namespace Seed.Unity.UI
             switch (platform)
             {
                 case Platforms.PlayStation5:
-                    return instance.PS_LeftBumper;
+                    return GetSprite(instance.PS_SpriteAsset, platform, 8);
 
                 case Platforms.XboxSeries:
-                    return instance.XB_LeftBumper;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 8);
 
                 case Platforms.Switch:
-                    return instance.NX_LeftBumper;
+                    return GetSprite(instance.NX_SpriteAsset, platform, 8);
 
                 case Platforms.Itch:
-                    return instance.PC_LeftBumper;
+                    return GetSprite(instance.PC_SpriteAsset, platform, 7);
 
                 default:
-                    return instance.XB_LeftBumper;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 8);
             }
         }
 
@@ -476,19 +322,19 @@ namespace Seed.Unity.UI
             switch (platform)
             {
                 case Platforms.PlayStation5:
-                    return instance.PS_RightBumper;
+                    return GetSprite(instance.PS_SpriteAsset, platform, 9);
 
                 case Platforms.XboxSeries:
-                    return instance.XB_RightBumper;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 9);
 
                 case Platforms.Switch:
-                    return instance.NX_RightBumper;
+                    return GetSprite(instance.NX_SpriteAsset, platform, 9);
 
                 case Platforms.Itch:
-                    return instance.PC_RightBumper;
+                    return GetSprite(instance.PC_SpriteAsset, platform, 8);
 
                 default:
-                    return instance.XB_RightBumper;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 9);
             }
         }
 
@@ -497,19 +343,19 @@ namespace Seed.Unity.UI
             switch (platform)
             {
                 case Platforms.PlayStation5:
-                    return instance.PS_LeftTrigger;
+                    return GetSprite(instance.PS_SpriteAsset, platform, 11);
 
                 case Platforms.XboxSeries:
-                    return instance.XB_LeftTrigger;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 10);
 
                 case Platforms.Switch:
-                    return instance.NX_LeftTrigger;
+                    return GetSprite(instance.NX_SpriteAsset, platform, 10);
 
-                case Platforms.Itch:
-                    return instance.PC_LeftTrigger;
+                //case Platforms.Itch:
+                //return GetSprite(instance.PC_SpriteAsset, platform, 1);
 
                 default:
-                    return instance.XB_LeftTrigger;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 10);
             }
         }
 
@@ -518,19 +364,19 @@ namespace Seed.Unity.UI
             switch (platform)
             {
                 case Platforms.PlayStation5:
-                    return instance.PS_RightTrigger;
+                    return GetSprite(instance.PS_SpriteAsset, platform, 10);
 
                 case Platforms.XboxSeries:
-                    return instance.XB_RightTrigger;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 11);
 
                 case Platforms.Switch:
-                    return instance.NX_RightTrigger;
+                    return GetSprite(instance.NX_SpriteAsset, platform, 11);
 
-                case Platforms.Itch:
-                    return instance.PC_RightTrigger;
+                //case Platforms.Itch:
+                //    return GetSprite(instance.PC_SpriteAsset, platform, 1);
 
                 default:
-                    return instance.XB_RightTrigger;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 11);
             }
         }
 
@@ -539,19 +385,19 @@ namespace Seed.Unity.UI
             switch (platform)
             {
                 case Platforms.PlayStation5:
-                    return instance.PS_DPadLeft;
+                    return GetSprite(instance.PS_SpriteAsset, platform, 4);
 
                 case Platforms.XboxSeries:
-                    return instance.XB_DPadLeft;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 5);
 
                 case Platforms.Switch:
-                    return instance.NX_DPadLeft;
+                    return GetSprite(instance.NX_SpriteAsset, platform, 4);
 
                 case Platforms.Itch:
-                    return instance.PC_DPadLeft;
+                    return GetSprite(instance.PC_SpriteAsset, platform, 10);
 
                 default:
-                    return instance.XB_DPadLeft;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 5);
             }
         }
 
@@ -560,19 +406,19 @@ namespace Seed.Unity.UI
             switch (platform)
             {
                 case Platforms.PlayStation5:
-                    return instance.PS_DPadRight;
+                    return GetSprite(instance.PS_SpriteAsset, platform, 6);
 
                 case Platforms.XboxSeries:
-                    return instance.XB_DPadRight;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 7);
 
                 case Platforms.Switch:
-                    return instance.NX_DPadRight;
+                    return GetSprite(instance.NX_SpriteAsset, platform, 7);
 
                 case Platforms.Itch:
-                    return instance.PC_DPadRight;
+                    return GetSprite(instance.PC_SpriteAsset, platform, 11);
 
                 default:
-                    return instance.XB_DPadRight;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 7);
             }
         }
 
@@ -581,19 +427,19 @@ namespace Seed.Unity.UI
             switch (platform)
             {
                 case Platforms.PlayStation5:
-                    return instance.PS_DPadUp;
+                    return GetSprite(instance.PS_SpriteAsset, platform, 7);
 
                 case Platforms.XboxSeries:
-                    return instance.XB_DPadUp;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 4);
 
                 case Platforms.Switch:
-                    return instance.NX_DPadUp;
+                    return GetSprite(instance.NX_SpriteAsset, platform, 5);
 
                 case Platforms.Itch:
-                    return instance.PC_DPadUp;
+                    return GetSprite(instance.PC_SpriteAsset, platform, 6);
 
                 default:
-                    return instance.XB_DPadUp;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 4);
             }
         }
 
@@ -602,19 +448,19 @@ namespace Seed.Unity.UI
             switch (platform)
             {
                 case Platforms.PlayStation5:
-                    return instance.PS_DPadDown;
+                    return GetSprite(instance.PS_SpriteAsset, platform, 4);
 
                 case Platforms.XboxSeries:
-                    return instance.XB_DPadDown;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 5);
 
                 case Platforms.Switch:
-                    return instance.NX_DPadDown;
+                    return GetSprite(instance.NX_SpriteAsset, platform, 4);
 
                 case Platforms.Itch:
-                    return instance.PC_DPadDown;
+                    return GetSprite(instance.PC_SpriteAsset, platform, 10);
 
                 default:
-                    return instance.XB_DPadDown;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 5);
             }
         }
 
@@ -623,20 +469,50 @@ namespace Seed.Unity.UI
             switch (platform)
             {
                 case Platforms.PlayStation5:
-                    return instance.PS_Pause;
+                    return GetSprite(instance.PS_SpriteAsset, platform, 12);
 
                 case Platforms.XboxSeries:
-                    return instance.XB_Pause;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 12);
 
                 case Platforms.Switch:
-                    return instance.NX_Pause;
+                    return GetSprite(instance.NX_SpriteAsset, platform, 13);
 
                 case Platforms.Itch:
-                    return instance.PC_Pause;
+                    return GetSprite(instance.PC_SpriteAsset, platform, 2);
 
                 default:
-                    return instance.XB_Pause;
+                    return GetSprite(instance.XB_SpriteAsset, platform, 12);
             }
+        }
+
+        private static Sprite GetSprite(TMP_SpriteAsset asset, Platforms platform, int glpyhIndex)
+        {
+            string iconId = GetIconId(platform, glpyhIndex);
+
+            if (instance.sprites.TryGetValue(iconId, out Sprite sprite) == false)
+            {
+                sprite = Create(iconId, asset, glpyhIndex);
+            }
+
+            return sprite;
+        }
+
+        private static Sprite Create(string iconId, TMP_SpriteAsset asset, int glyphIndex)
+        {
+            GlyphRect glyph = asset.spriteCharacterTable[glyphIndex].glyph.glyphRect;
+
+            Rect bounds = new Rect(glyph.x, glyph.y, glyph.width, glyph.height);
+
+            Sprite sprite = Sprite.Create(asset.material.mainTexture as Texture2D, bounds, Vector2.zero);
+
+            instance.sprites.Add(iconId, sprite);
+
+            return sprite;
+        }
+
+        private static string GetIconId(Platforms platform, int glyphIndex)
+        {
+            return string.Format("{0}.{1}", (int)platform, glyphIndex);
         }
     }
 }

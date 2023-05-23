@@ -12,7 +12,14 @@ namespace Seed.Events
         {
         }
 
-        public static EventManager Instance => instance;
+        public static EventManager Instance
+        {
+            get
+            {
+                SetupEventManagerIfNull();
+                return instance;
+            }
+        }
 
         private static void SetupEventManagerIfNull()
         {
