@@ -9,28 +9,18 @@ namespace Seed.Unity.Options
     {
         private const string hintFormat = "{0}Hint";
 
-        protected GameObject UI;
-
         protected EditableOption option;
-
-        protected string name;
 
         protected string hint;
 
-        public OptionsMenuOption(string id, string value, Vector3 position, Transform parent)
-            : base(id)
+        public OptionsMenuOption(string prefabId, string id, string value, Vector3 position, Transform parent)
+            : base(prefabId, id, position, parent)
         {
-            UI = AddressableCatalogue.CreateObject("Option", position, parent);
-
             option = UI.GetComponent<EditableOption>();
-
-            name = Translations.Get(id);
 
             hint = Translations.Get(string.Format(hintFormat, id));
 
             option.Setup(name, value);
-
-            Hide();
         }
 
         public void SetValue(string value)
@@ -41,16 +31,6 @@ namespace Seed.Unity.Options
         public string GetHint()
         {
             return hint;
-        }
-
-        public void Show()
-        {
-            UI.SetActive(true);
-        }
-
-        public void Hide()
-        {
-            UI.SetActive(false);
         }
     }
 }

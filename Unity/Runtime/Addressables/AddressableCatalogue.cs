@@ -67,6 +67,8 @@ namespace Seed.Unity.Addressables
 
         private static AddressableCatalogueItem LoadAsset(string id, bool preventFlush = false)
         {
+            Initialise();
+
             if (instance.loadedObjects.TryGetValue(id, out AddressableCatalogueItem item) == false)
             {
                 AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(id);

@@ -36,7 +36,7 @@ namespace Seed.Unity.UI
 
         private void ChangeSprite()
         {
-            image.sprite = IconLibrary.GetIcon(Button);
+            image.sprite = ControllerIconLibrary.GetIcon(Button);
             image.SetNativeSize();
         }
     }

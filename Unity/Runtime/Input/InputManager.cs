@@ -106,6 +106,7 @@ namespace Seed.Unity.Input
                     break;
 
                 case "Keyboard":
+                case "Mouse":
                     controllerType = Platforms.Itch;
                     break;
 

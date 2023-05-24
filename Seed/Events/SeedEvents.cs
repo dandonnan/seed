@@ -4,6 +4,8 @@ namespace Seed.Events
     {
         public const string InputDeviceChanged = "InputDeviceChanged";
 
+        public const string LanguageChanged = "LanguageChanged";
+
         public const string ChangeScene = "ChangeScene";
 
         public const string CloseGame = "CloseGame";

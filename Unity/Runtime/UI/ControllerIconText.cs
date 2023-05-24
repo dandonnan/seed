@@ -56,7 +56,7 @@ namespace Seed.Unity.UI
                 string instance = newString.Substring(newString.IndexOf("{ICON_") + 1);
                 instance = instance.Substring(0, instance.IndexOf("}"));
 
-                string iconName = string.Format(spriteFormat, IconLibrary.GetIcon(instance));
+                string iconName = string.Format(spriteFormat, ControllerIconLibrary.GetIcon(instance));
 
                 newString = newString.Replace($"{{{instance}}}", iconName);
             }
@@ -67,7 +67,7 @@ namespace Seed.Unity.UI
 
         private void ChangeIcon()
         {
-            Text.spriteAsset = IconLibrary.GetSpriteAsset();
+            Text.spriteAsset = ControllerIconLibrary.GetSpriteAsset();
             ChangeText();
         }
     }

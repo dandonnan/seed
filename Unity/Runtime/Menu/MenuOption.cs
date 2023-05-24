@@ -1,7 +1,9 @@
 namespace Seed.Unity.Menu
 {
     using System;
+    using Seed.Unity.Addressables;
     using Seed.Unity.Input;
+    using Seed.Unity.Text;
     using UnityEngine;
     using UnityEngine.InputSystem;
 
@@ -21,18 +23,40 @@ namespace Seed.Unity.Menu
 
         public Action OnSelect { get; set; }
 
-        public MenuOption(string id)
+        protected GameObject UI;
+
+        protected IMenuOptionUI UIComponent;
+
+        protected string name;
+
+        public MenuOption(string prefabId, string stringId, Vector3 position, Transform parent)
         {
-            Id = id;
+            Id = stringId;
+
+            UI = AddressableCatalogue.CreateObject(prefabId, position, parent);
+
+            UIComponent = UI.GetComponent<IMenuOptionUI>();
+
+            SetText();
         }
 
-        public void Update()
+        public virtual void Update()
         {
             PerformActionIfBinding(InputManager.Menu.LeftStickMove, OnUp, Vector2.up);
             PerformActionIfBinding(InputManager.Menu.LeftStickMove, OnDown, Vector2.down);
             PerformActionIfBinding(InputManager.Menu.LeftStickMove, OnLeft, Vector2.left);
             PerformActionIfBinding(InputManager.Menu.LeftStickMove, OnRight, Vector2.right);
             PerformActionIfBinding(InputManager.Menu.South, OnSelect);
+        }
+
+        public virtual void Show()
+        {
+            UI.SetActive(true);
+        }
+
+        public virtual void Hide()
+        {
+            UI.SetActive(false);
         }
 
         private void PerformActionIfBinding(InputAction binding, Action action)
@@ -52,6 +76,13 @@ namespace Seed.Unity.Menu
                     action();
                 }
             }
+        }
+
+        private void SetText()
+        {
+            name = Translations.Get(Id);
+
+            UIComponent.SetText(name);
         }
     }
 }

@@ -37,5 +37,15 @@ namespace Seed.Unity.Menu
                 }
             }
         }
+
+        public void Show()
+        {
+            options.ForEach(o => o.Show());
+        }
+
+        public void Hide()
+        {
+            options.ForEach(o => o.Hide());
+        }
     }
 }

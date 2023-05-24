@@ -8,15 +8,19 @@ namespace Seed.Unity.Options
     {
         private readonly OptionsMenuList list;
 
-        private Transform parent;
+        private readonly string prefabId;
+
+        private readonly Transform parent;
+
+        private float offset;
 
         private Vector3 position;
 
-        private int offset;
-
-        private OptionsMenuListBuilder(Transform parent, Vector3 position, int yOffset)
+        private OptionsMenuListBuilder(string prefabId, Transform parent, Vector3 position, float yOffset)
         {
             list = new OptionsMenuList();
+
+            this.prefabId = prefabId;
 
             this.parent = parent;
 
@@ -25,9 +29,9 @@ namespace Seed.Unity.Options
             offset = yOffset;
         }
 
-        public static OptionsMenuListBuilder Create(Transform parent, Vector3 position, int yOffset)
+        public static OptionsMenuListBuilder Create(string prefabId, Transform parent, Vector3 position, float yOffset)
         {
-            return new OptionsMenuListBuilder(parent, position, yOffset);
+            return new OptionsMenuListBuilder(prefabId, parent, position, yOffset);
         }
 
         public OptionsMenuListBuilder Add(string id, int value, Action onLeft, Action onRight)
@@ -37,7 +41,7 @@ namespace Seed.Unity.Options
 
         public OptionsMenuListBuilder Add(string id, string value, Action onLeft, Action onRight)
         {
-            list.Add(new OptionsMenuOption(id, value, position, parent)
+            list.Add(new OptionsMenuOption(prefabId, id, value, position, parent)
             {
                 OnLeft = onLeft,
                 OnRight = onRight,

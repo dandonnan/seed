@@ -41,7 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2423255202789109960}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fee2645b7ae1d49409462b7d0e5da2a1, type: 3}
+  m_Script: {fileID: 11500000, guid: 39dabe5c80cd8494da28896e3c651c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PS_SpriteAsset: {fileID: 11400000, guid: 9a45e5b1d8a943f4084dcfe9636a6b1c, type: 2}

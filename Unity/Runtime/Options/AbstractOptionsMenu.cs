@@ -5,14 +5,6 @@ namespace Seed.Unity.Options
 
     public abstract class AbstractOptionsMenu
     {
-        protected const string onId = "OptionOn";
-
-        protected const string offId = "OptionOff";
-
-        protected const string yesId = "OptionYes";
-
-        protected const string noId = "OptionNo";
-
         protected const int defaultYOffset = -110;
 
         protected Vector3 defaultPosition;
@@ -39,16 +31,6 @@ namespace Seed.Unity.Options
         public virtual void Update()
         {
             menu.Update();
-        }
-
-        protected string GetYesOrNoFromBool(bool value)
-        {
-            return value ? Translations.Get(yesId) : Translations.Get(noId);
-        }
-
-        protected string GetOnOrOffFromBool(bool value)
-        {
-            return value ? Translations.Get(onId) : Translations.Get(offId);
         }
 
         protected abstract void PopulateMenu();

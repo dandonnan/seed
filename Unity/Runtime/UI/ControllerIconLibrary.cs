@@ -10,9 +10,9 @@ namespace Seed.Unity.UI
     using UnityEngine.TextCore;
 
     [DefaultExecutionOrder(-1)]
-    public class IconLibrary : MonoBehaviour
+    public class ControllerIconLibrary : MonoBehaviour
     {
-        private static IconLibrary instance;
+        private static ControllerIconLibrary instance;
 
         private Dictionary<string, Sprite> sprites;
 
