@@ -13,8 +13,6 @@ namespace Seed.MonoGame.Save
 
         private GameSaveData gameData;
 
-        private MachineSaveData machineData;
-
         private MappedInputs mappedInputs;
 
         private SaveManager()
@@ -34,8 +32,6 @@ namespace Seed.MonoGame.Save
 
         public static GameSaveData GameData => instance.gameData;
 
-        public static MachineSaveData MachineData => instance.machineData;
-
         public static void Save()
         {
             try
@@ -49,16 +45,16 @@ namespace Seed.MonoGame.Save
 
                 string gameData = JsonConvert.SerializeObject(instance.gameData);
 
-                instance.machineData.MappedInputs = instance.mappedInputs.Serialise();
+                /*instance.machineData.MappedInputs = instance.mappedInputs.Serialise();
 
-                string machineData = JsonConvert.SerializeObject(instance.machineData);
+                string machineData = JsonConvert.SerializeObject(instance.machineData); */
 
                 PlatformManager.Platform.SaveData(gameData);
 
-                using (StreamWriter streamWriter = new StreamWriter(MachineFile))
+                /*using (StreamWriter streamWriter = new StreamWriter(MachineFile))
                 {
                     streamWriter.Write(machineData);
-                }
+                } */
             }
             catch
             {
@@ -76,7 +72,7 @@ namespace Seed.MonoGame.Save
                 {
                     using (StreamReader streamReader = new StreamReader(MachineFile))
                     {
-                        instance.machineData = JsonConvert.DeserializeObject<MachineSaveData>(streamReader.ReadToEnd());
+                        //instance.machineData = JsonConvert.DeserializeObject<MachineSaveData>(streamReader.ReadToEnd());
                     }
                 }
                 catch
@@ -86,11 +82,11 @@ namespace Seed.MonoGame.Save
             }
             else
             {
-                instance.machineData = new MachineSaveData();
+                //instance.machineData = new MachineSaveData();
             }
 
-            instance.mappedInputs = new MappedInputs();
-            instance.mappedInputs.Deserialise(instance.machineData.MappedInputs);
+            //instance.mappedInputs = new MappedInputs();
+            //instance.mappedInputs.Deserialise(instance.machineData.MappedInputs);
         }
     }
 }

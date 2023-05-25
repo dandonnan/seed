@@ -18,27 +18,28 @@ namespace Seed.MonoGame.Save
         private Achievement[] achievements { get; set; }
             = new Achievement[numberOfAchievements];
 
-        public AudioSettings Audio { get; set; }
+        public BaseAudioOptions Audio { get; set; }
+
+        public BaseGraphicsOptions Graphics { get; set; }
+
+        public BaseControlsOptions Controls { get; set; }
 
         public GameSaveData()
         {
             SetToDefault();
         }
 
-        public bool AllowRumble()
-        {
-            return false;
-        }
-
         private void SetToDefault()
         {
             //Language = SupportedLanguages.GetCultureLanguageCodeOrDefault();
 
-            Audio = new AudioSettings
-            {
-                MusicVolume = AudioSettings.DefaultVolume,
-                SoundVolume = AudioSettings.DefaultVolume,
-            };
+            Audio = new BaseAudioOptions();
+            Graphics = new BaseGraphicsOptions();
+            Controls = new BaseControlsOptions();
+
+            Audio.SetToDefault();
+            Graphics.SetToDefault();
+            Controls.SetToDefault();
 
             SetupAchievements();
         }

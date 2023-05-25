@@ -7,9 +7,5 @@ namespace Seed.MonoGame.Save
         public const int MinVolume = 0;
 
         public const int MaxVolume = 10;
-
-        public int MusicVolume { get; set; }
-
-        public int SoundVolume { get; set; }
     }
 }

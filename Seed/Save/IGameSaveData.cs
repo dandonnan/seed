@@ -4,8 +4,14 @@ namespace Seed.Save
 
     public interface IGameSaveData
     {
-        List<Achievement> Achievements { get; protected set; }
+        string Language { get; protected set; }
 
-        bool AllowRumble();
+        BaseAudioOptions Audio { get; protected set; }
+
+        BaseGraphicsOptions Graphics { get; protected set; }
+
+        BaseControlsOptions Controls { get; protected set; }
+
+        List<Achievement> Achievements { get; protected set; }
     }
 }

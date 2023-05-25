@@ -5,26 +5,37 @@
     using Microsoft.Xna.Framework.Graphics;
     using Seed.Achievements;
     using Seed.Events;
+    using Seed.Graphics;
     using Seed.MonoGame.Input;
     using Seed.MonoGame.Localisation;
     using Seed.MonoGame.Resources.Graphics;
     using Seed.MonoGame.Resources.Localisation;
+    using Seed.MonoGame.Scenes;
     using Seed.Platforms;
+    using Seed.Save;
     using Seed.State;
     using System.Collections.Generic;
     using System.Globalization;
 
     public class GameManager
     {
-        public const int BaseResolutionWidth = 1920;
+        public static int BaseResolutionWidth => instance.baseResolutionWidth;
 
-        public const int BaseResolutionHeight = 1080;
+        public static int BaseResolutionHeight => instance.baseResolutionHeight;
 
-        public const int UiResolutionWidth = 1920;
+        public static int UiResolutionWidth => instance.uiResolutionWidth;
 
-        public const int UiResolutionHeight = 1080;
+        public static int UiResolutionHeight = instance.uiResolutionHeight;
 
-        private static GameManager gameManager;
+        private static GameManager instance;
+
+        private readonly int baseResolutionWidth;
+
+        private readonly int baseResolutionHeight;
+
+        private readonly int uiResolutionWidth;
+
+        private readonly int uiResolutionHeight;
 
         private readonly Game game;
 
@@ -39,8 +50,6 @@
         private readonly InputManager inputManager;
 
         private readonly CheckpointManager checkpointManager;
-
-        private readonly IconLibrary iconLibrary;
 
         private IScene currentScene;
 
@@ -58,7 +67,11 @@
                             ContentManager contentManager,
                             GraphicsDevice graphicsDevice,
                             GraphicsDeviceManager graphicsDeviceManager,
-                            SpriteBatch spriteBatch)
+                            SpriteBatch spriteBatch,
+                            int resolutionWidth = 1920,
+                            int resolutionHeight = 1080,
+                            int uiResolutionWidth = 1920,
+                            int uiResolutionHeight = 1080)
         {
             this.game = game;
             this.contentManager = contentManager;
@@ -66,7 +79,7 @@
             this.graphicsDeviceManager = graphicsDeviceManager;
             this.spriteBatch = spriteBatch;
 
-            gameManager = this;
+            instance = this;
 
             checkpointManager = CheckpointManager.Initialise();
 
@@ -79,29 +92,24 @@
             EventManager.Initialise();
 
             StringLibrary.Initialise();
-            iconLibrary = IconLibrary.Initialise();
             AchievementManager.Initialise();
 
             SetupRenderTarget();
 
             EventManager.Instance.EventFired += EventManager_OnEventFired;
-
-            currentScene = new TestScene();
         }
 
-        public static ContentManager ContentManager => gameManager.contentManager;
+        public static ContentManager ContentManager => instance.contentManager;
 
-        public static GraphicsDeviceManager GraphicsDeviceManager => gameManager.graphicsDeviceManager;
+        public static GraphicsDeviceManager GraphicsDeviceManager => instance.graphicsDeviceManager;
 
-        public static SpriteBatch SpriteBatch => gameManager.spriteBatch;
+        public static SpriteBatch SpriteBatch => instance.spriteBatch;
 
-        public static CheckpointManager CheckpointManager => gameManager.checkpointManager;
+        public static CheckpointManager CheckpointManager => instance.checkpointManager;
 
-        public static InputManager InputManager => gameManager.inputManager;
+        public static InputManager InputManager => instance.inputManager;
 
-        public static IconLibrary IconLibrary => gameManager.iconLibrary;
-
-        public static Vector2 UiScale => gameManager.uiScale;
+        public static Vector2 UiScale => instance.uiScale;
 
         public static SpriteFont LoadFont(string fontName)
         {
@@ -135,31 +143,31 @@
 
         public static Vector2 MatrixScale()
         {
-            return new Vector2(gameManager.renderMatrix.M11, gameManager.renderMatrix.M22);
+            return new Vector2(instance.renderMatrix.M11, instance.renderMatrix.M22);
         }
 
         public static void ChangeScreenSettings()
         {
-            GraphicsDeviceManager.HardwareModeSwitch = !SaveManager.MachineData.Graphics.Bordered;
+            GraphicsDeviceManager.HardwareModeSwitch = SaveManager.GameData.Graphics.ScreenMode != WindowMode.Borderless;
 
-            gameManager.game.Window.IsBorderless = SaveManager.MachineData.Graphics.Bordered;
+            instance.game.Window.IsBorderless = SaveManager.GameData.Graphics.ScreenMode == WindowMode.Borderless;
 
-            GraphicsDeviceManager.IsFullScreen = SaveManager.MachineData.Graphics.Bordered || SaveManager.MachineData.Graphics.Fullscreen;
+            GraphicsDeviceManager.IsFullScreen = SaveManager.GameData.Graphics.ScreenMode == WindowMode.Borderless || SaveManager.GameData.Graphics.ScreenMode == WindowMode.Fullscreen;
 
-            if (SaveManager.MachineData.Graphics.Bordered)
+            if (SaveManager.GameData.Graphics.ScreenMode == WindowMode.Borderless)
             {
                 GraphicsDeviceManager.PreferredBackBufferWidth = SpriteBatch.GraphicsDevice.DisplayMode.Width;
                 GraphicsDeviceManager.PreferredBackBufferHeight = SpriteBatch.GraphicsDevice.DisplayMode.Height;
             }
             else
             {
-                GraphicsDeviceManager.PreferredBackBufferWidth = SaveManager.MachineData.Graphics.ResolutionWidth;
-                GraphicsDeviceManager.PreferredBackBufferHeight = SaveManager.MachineData.Graphics.ResolutionHeight;
+                GraphicsDeviceManager.PreferredBackBufferWidth = SaveManager.GameData.Graphics.ResolutionWidth;
+                GraphicsDeviceManager.PreferredBackBufferHeight = SaveManager.GameData.Graphics.ResolutionHeight;
             }
 
             GraphicsDeviceManager.ApplyChanges();
 
-            gameManager.ScaleRenderTarget();
+            instance.ScaleRenderTarget();
         }
 
         public void Update(GameTime gameTime)
@@ -235,7 +243,7 @@
 
             spriteBatch.Begin(transformMatrix: uiMatrix);
 
-            currentScene.DrawUi();
+            currentScene.DrawUI();
 
             spriteBatch.End();
         }

@@ -1,10 +1,10 @@
 namespace Seed.MonoGame.Platforms
 {
-    using Seed.MonoGame.Graphics;
+    using Seed.Graphics;
 
     public interface IMonoGamePlatform
     {
-        ScreenSizes GetDefaultScreenSize();
+        WindowMode GetDefaultScreenSize();
 
         string GetIconFile();
     }
