@@ -66,9 +66,9 @@ namespace Seed.Unity.Menu
             return this;
         }
 
-        public MenuListBuilder AddIfPC(string id, Action onSelect)
+        public MenuListBuilder AddOnCondition(string id, Action onSelect, bool condition)
         {
-            if (PlatformManager.IsPC())
+            if (condition)
             {
                 Add(id, onSelect);
             }
@@ -76,9 +76,9 @@ namespace Seed.Unity.Menu
             return this;
         }
 
-        public MenuListBuilder AddIfPC(string id, Action onLeft, Action onRight)
+        public MenuListBuilder AddOnCondition(string id, Action onLeft, Action onRight, bool condition)
         {
-            if (PlatformManager.IsPC())
+            if (condition)
             {
                 Add(id, onLeft, onRight);
             }
@@ -86,9 +86,9 @@ namespace Seed.Unity.Menu
             return this;
         }
 
-        public MenuListBuilder AddIfPC(MenuOption option)
+        public MenuListBuilder AddOnCondition(MenuOption option, bool condition)
         {
-            if (PlatformManager.IsPC())
+            if (condition)
             {
                 Add(option);
             }
