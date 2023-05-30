@@ -10,6 +10,10 @@ namespace Seed.Events
 
         public const string CloseGame = "CloseGame";
 
+        public const string PauseGame = "PauseGame";
+
+        public const string ResumeGame = "ResumeGame";
+
         public const string OpenPauseMenu = "OpenPauseMenu";
 
         public const string ClosePauseMenu = "ClosePauseMenu";

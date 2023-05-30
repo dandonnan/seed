@@ -51,7 +51,7 @@ namespace Seed.Unity.Input
 
         public static void Rumble(float time = 0.5f)
         {
-            if (SaveManager.GameData.AllowRumble())
+            if (SaveManager.GameData.Controls.AllowRumble)
             {
                 instance.rumbleTime = time;
 
