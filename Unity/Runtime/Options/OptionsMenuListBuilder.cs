@@ -52,9 +52,9 @@ namespace Seed.Unity.Options
             return this;
         }
 
-        public OptionsMenuListBuilder AddIfPC(string id, string value, Action onLeft, Action onRight)
+        public OptionsMenuListBuilder AddOnCondition(string id, string value, Action onLeft, Action onRight, bool condition)
         {
-            if (PlatformManager.IsPC())
+            if (condition)
             {
                 Add(id, value, onLeft, onRight);
             }

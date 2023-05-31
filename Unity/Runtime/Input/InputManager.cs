@@ -6,7 +6,7 @@ namespace Seed.Unity.Input
     using UnityEngine;
     using UnityEngine.InputSystem;
 
-    public class InputManager
+    public partial class InputManager
     {
         private static InputManager instance;
 
