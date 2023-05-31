@@ -4,14 +4,14 @@ namespace Seed.Save
 
     public interface IGameSaveData
     {
-        string Language { get; protected set; }
+        string Language { get; set; }
 
-        BaseAudioOptions Audio { get; protected set; }
+        BaseAudioOptions Audio { get; set; }
 
-        BaseGraphicsOptions Graphics { get; protected set; }
+        BaseGraphicsOptions Graphics { get; set; }
 
-        BaseControlsOptions Controls { get; protected set; }
+        BaseControlsOptions Controls { get; set; }
 
-        List<Achievement> Achievements { get; protected set; }
+        List<Achievement> Achievements { get; set; }
     }
 }

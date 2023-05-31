@@ -20,7 +20,7 @@ namespace Seed.Unity.Options
 
             hint = Translations.Get(string.Format(hintFormat, id));
 
-            option.Setup(name, value);
+            option.SetValue(value);
         }
 
         public void SetValue(string value)

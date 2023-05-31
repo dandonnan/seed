@@ -6,18 +6,26 @@ namespace Seed.Save
 
         private IGameSaveData gameData;
 
-        private SaveManager()
+        private Action save;
+
+        private Func<IGameSaveData> load;
+
+        private SaveManager(Action save, Func<IGameSaveData> load)
         {
             instance = this;
+
+            this.save = save;
+
+            this.load = load;
 
             Load();
         }
 
-        public static void Initialise()
+        public static void Initialise(Action save, Func<IGameSaveData> load)
         {
             if (instance == null)
             {
-                new SaveManager();
+                new SaveManager(save, load);
             }
         }
 
@@ -25,10 +33,15 @@ namespace Seed.Save
 
         public static void Save()
         {
+            instance.save?.Invoke();
         }
 
         public static void Load()
         {
+            if (instance.load != null)
+            {
+                instance.gameData = instance.load.Invoke();
+            }
         }
     }
 }

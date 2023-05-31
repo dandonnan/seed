@@ -11,6 +11,7 @@
 - [Menu](#menu)
 - [Network](#network)
 - [Options](#options)
+- [Platforms](#platforms)
 - [Prefabs](#prefabs)
 - [Shaders](#shaders)
 - [Text](Text.md)
@@ -39,6 +40,9 @@ TODO
 TODO
 
 ## Options
+TODO
+
+## Platforms
 TODO
 
 ## Prefabs
