@@ -11,8 +11,12 @@ namespace Seed.Unity.Options
 
         protected OptionsMenuList menu;
 
-        public AbstractOptionsMenu()
+        protected Transform parent;
+
+        public AbstractOptionsMenu(Transform parent)
         {
+            this.parent = parent;
+
             defaultPosition = new Vector3(300, 450, 0);
 
             PopulateMenu();
