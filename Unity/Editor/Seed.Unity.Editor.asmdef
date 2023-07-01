@@ -7,8 +7,10 @@
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
-    "autoReferenced": false,
-    "defineConstraints": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+	    "UNITY_EDITOR"
+	],
     "versionDefines": [],
     "noEngineReferences": false
 }
