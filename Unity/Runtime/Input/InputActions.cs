@@ -169,7 +169,7 @@ namespace Seed.Unity.Input
                 {
                     ""name"": """",
                     ""id"": ""9d0414e1-b0d8-4254-bfa5-ea8a08d2d844"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -719,7 +719,7 @@ namespace Seed.Unity.Input
                 {
                     ""name"": """",
                     ""id"": ""1d8f2419-2ba7-4a07-9a4f-dc1d9c072a91"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
